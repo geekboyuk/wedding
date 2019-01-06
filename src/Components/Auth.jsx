@@ -50,9 +50,6 @@ export default class Auth {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
-
-    // navigate to the home route
-    // history.replace('/home');
   }
 
   renewSession() {
@@ -78,9 +75,6 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
-
-    // navigate to the home route
-    // history.replace('/home');
   }
 
   logout() {
