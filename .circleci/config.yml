@@ -57,7 +57,7 @@ jobs:
 
       - run:
           name: Deploy to S3
-          command: aws s3 sync build s3://wedding.westcottwideweb.com/build/ --delete
+          command: aws s3 sync build s3://wedding.westcottwideweb.com/ --delete
 
 workflows:
   version: 2
