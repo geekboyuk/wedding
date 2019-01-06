@@ -4,7 +4,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: process.env.REACT_APP_AUTH_DOMAIN,
     clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
-    redirectUri: process.env.REACT_APP_AUTH_REDIRECT_URL,
+    redirectUri: process.env.REACT_APP_AUTH_CALLBACK_URL,
     responseType: 'token id_token',
     scope: 'openid'
   });
@@ -79,7 +79,7 @@ export default class Auth {
 
   logout() {
     this.clearSession();
-    this.auth0.logout();
+    this.auth0.logout({ returnTo: process.env.REACT_APP_AUTH_LOGOUT_URL });
   }
 
   isLoggedIn() {
