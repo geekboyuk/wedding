@@ -1,36 +1,14 @@
-import React from "react";
-
-const LoggedOut = ({ onSignUp, onLogin }) => (
-  <div>
-    <button onClick={onSignUp}>Sign Up</button>
-    <button onClick={onLogin}>Log In</button>
-  </div>
-);
-
-const LoggedIn = ({ onLogout }) => (
-  <div>
-    <button onClick={onLogout}>Log Out</button>
-  </div>
-)
-
-const Actions = ({ isAuthenticating, isLoggedIn, onSignUp, onLogin, onLogout }) => 
-  isAuthenticating ? 
-    null : 
-    isLoggedIn ?
-      <LoggedIn onLogout={onLogout} /> :
-      <LoggedOut onSignUp={onSignUp} onLogin={onLogin} />
+import React from 'react';
+import { Box, Button } from 'grommet';
 
 const AppHeader = ({ isAuthenticating, isLoggedIn, onSignUp, onLogin, onLogout }) => 
-  <div>
-    <Actions 
-      isAuthenticating={isAuthenticating}
-      isLoggedIn={isLoggedIn}
-      onSignUp={onSignUp}
-      onLogin={onLogin}
-      onLogout={onLogout}
-    />
-    <p>isAuthenticating={isAuthenticating ? 'yes' : 'no'}</p>
-    <p>isLoggedIn={isLoggedIn ? 'yes' : 'no'}</p>
-  </div>
+  <Box direction="row" pad="small" background="brand">
+    <Box margin="auto"/>
+    <Box direction="row">
+    {!isAuthenticating && isLoggedIn && (<Button onClick={onLogout} label="Log Out" />)}
+    {!isAuthenticating && !isLoggedIn && (<Button onClick={onSignUp}  label="Sign Up" />)}
+    {!isAuthenticating && !isLoggedIn && (<Button onClick={onLogin}  label="Log In" />)}
+    </Box>
+  </Box>
 
 export default AppHeader;

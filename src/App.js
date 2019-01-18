@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Router } from "react-router-dom";
+import { Grommet, Box } from 'grommet';
+import { createBrowserHistory } from "history"
 
-import Landing from './Containers/Landing';
-import Home from './Containers/Home';
+import theme from './theme'
 
 import Auth from './Components/Auth';
-import Callback from './Components/Callback';
+import Routes from './Routes';
 import AppHeader from './Components/AppHeader';
-import PrivateRoute from './Components/PrivateRoute';
 
-import './App.css';
 
 const auth = new Auth();
+
+const history = createBrowserHistory();
 
 class App extends Component {
   constructor(props) {
@@ -76,25 +77,19 @@ class App extends Component {
     const { isAuthenticating, isLoggedIn } = this.state;
 
     return (
-      <Router>
-        <div>
-          <AppHeader
-            isLoggedIn={isLoggedIn}
-            isAuthenticating={isAuthenticating}
-            onSignUp={this.onSignUp}
-            onLogin={this.onLogin}
-            onLogout={this.onLogout}
-          />
-          { !isAuthenticating && (
-            <div>
-              <Route path="/" exact component={Landing}/>
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/home">
-                <Home />
-              </PrivateRoute>
-              <Route path="/callback" render={(props) => (<Callback onCallback={this.onCallback} {...props} />)} />
-            </div>
-          )}
-        </div>
+      <Router history={history}>
+        <Grommet full theme={theme}>
+          <Box flex>
+            <AppHeader
+              isLoggedIn={isLoggedIn}
+              isAuthenticating={isAuthenticating}
+              onSignUp={this.onSignUp}
+              onLogin={this.onLogin}
+              onLogout={this.onLogout}
+            />
+            <Routes isAuthenticating={isAuthenticating} isLoggedIn={isLoggedIn} onCallback={this.onCallback} />
+          </Box>
+        </Grommet>
       </Router>
     );
   }
