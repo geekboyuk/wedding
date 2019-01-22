@@ -69,7 +69,10 @@ class App extends Component {
           });
           isLoggedIn && history.push('/home');
         })
-        .catch(() => this.setState({ isAuthenticating: false }));
+        .catch(() => {
+          this.setState({ isAuthenticating: false });
+          history.push('/');
+        });
     }
   }
 
