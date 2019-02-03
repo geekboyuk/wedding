@@ -29,7 +29,6 @@ class App extends Component {
     this.onSignUp = this.onSignUp.bind(this);
 
     this.onCallback = this.onCallback.bind(this);
-    this.onInviteCode = this.onInviteCode.bind(this);
   }
 
   componentDidMount() {
@@ -86,11 +85,6 @@ class App extends Component {
     }
   }
 
-  onInviteCode(e) {
-    e.preventDefault();
-    console.log({ e });
-  }
-
   render() {
     const { isAuthenticating, isLoggedIn, email, isVerified, group, token } = this.state;
 
@@ -116,7 +110,6 @@ class App extends Component {
                       email={email}
                       isVerified={isVerified}
                       group={group}
-                      onInviteSubmit={this.onInviteCode}
                     />
                   </PrivateRoute>
                   <Route path="/callback" render={(props) => (<Callback onCallback={this.onCallback} {...props} />)} />

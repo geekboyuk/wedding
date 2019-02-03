@@ -14,13 +14,15 @@ const handleResponse = url => (response) => {
   return response;
 };
 
-const jsonify = response => response.json().then((res) => {
-  console.log({ res });
-  return res;
-});
+const jsonify = response => {
+  if (response.status === 200) {
+    return response.json();
+  }
+}
 
-const fetcher = (url, { token, headers, body, queryString }) => {
+const fetcher = (url, { token, method='get', headers, body, queryString }) => {
   const options = {
+    method,
     headers: { ...defaultHeaders }
   };
 
@@ -43,11 +45,9 @@ const fetcher = (url, { token, headers, body, queryString }) => {
     `${baseUrl}${url}?${qs.stringify(queryString)}` :
     `${baseUrl}${url}`;
 
-  console.log('fetch', {actualUrl, options});
-
   return fetch(actualUrl, options)
     .then(handleResponse(url))
-    .then(jsonify);
+    .then(jsonify)
 }
 
 export default fetcher;

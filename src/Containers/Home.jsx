@@ -11,6 +11,7 @@ import InviteCode from '../Components/InviteCode';
 
 import fetchUserDetails from '../Utils/fetchUserDetails';
 import fetchGroup from '../Utils/fetchGroup';
+import storeUserDetails from '../Utils/storeUserDetails';
 
 class Home extends Component {
   constructor(props) {
@@ -28,12 +29,17 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { email } = this.props;
-    console.log({ email })
+    const { token, email } = this.props;
 
-    // See if we have a user yet?  If not then we need to ask for an invitation code
-
-    // email && fetchUserDetails(email).then(console.log);
+    email && fetchUserDetails(token, email)
+      .then(({group, inviteType, response}) => {
+        this.setState({
+          group,
+          inviteType,
+          response,
+          hasResponded: !!response,
+        })
+      }).catch(() => {});
   }
 
   onInviteCode(e) {
@@ -49,7 +55,7 @@ class Home extends Component {
 
     fetchGroup(token, code)
       .then(({ group, inviteType }) => {
-        // updateUser(token, email, group)
+        storeUserDetails(token, {email, group, inviteType});
         this.setState({ 
           group, 
           inviteType
@@ -66,6 +72,10 @@ class Home extends Component {
     e.preventDefault();
 
     const { response } = e.value;
+    const { token, email } = this.props;
+    const { group, inviteType } = this.state;
+
+    storeUserDetails(token, {email, group, inviteType, response});
 
     this.setState({ 
       hasResponded: true,

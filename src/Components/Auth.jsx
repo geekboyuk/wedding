@@ -26,7 +26,7 @@ export default class Auth {
           this.setSession(authResult);
           resolve();
         } else if (err) {
-          console.log(err);
+          console.error(err);
           reject(err);
         }
       });
@@ -58,8 +58,6 @@ export default class Auth {
   }
 
   setSession(authResult) {
-    console.log({ authResult });
-
     // Set the time that the access token will expire at
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
@@ -77,7 +75,7 @@ export default class Auth {
           resolve();
         } else if (err) {
           this.clearSession();
-          console.log(err);
+          console.error(err);
           reject();
         }
       });
