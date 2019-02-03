@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { Route, Redirect } from "react-router-dom";
 import { Router } from "react-router-dom";
 import { Grommet, Box } from 'grommet';
 import { createBrowserHistory } from "history"
 
 import theme from './theme'
-
 import Auth from './Components/Auth';
-import Routes from './Routes';
 import AppHeader from './Components/AppHeader';
-
+import Landing from './Containers/Landing';
+import Home from './Containers/Home';
+import Callback from './Components/Callback';
+import PrivateRoute from './Components/PrivateRoute';
 
 const auth = new Auth();
 
@@ -27,19 +29,32 @@ class App extends Component {
     this.onSignUp = this.onSignUp.bind(this);
 
     this.onCallback = this.onCallback.bind(this);
+    this.onInviteCode = this.onInviteCode.bind(this);
   }
 
   componentDidMount() {
     this.setState({
-      isLoggedIn: auth.isLoggedIn(),
+      isLoggedIn: auth.getIsLoggedIn(),
     });
-    auth.renewSession().then(() => {
-      const isLoggedIn = auth.isLoggedIn();
-          this.setState({
-            isLoggedIn,
-            isAuthenticating: false,
-          });
-    }).catch(() => this.setState({ isAuthenticating: false }));
+
+    auth.renewSession()
+      .then(() => this.setAuthState())
+      .catch(() => this.setState({ isAuthenticating: false }));
+  }
+
+  setAuthState() {
+    const isLoggedIn = auth.getIsLoggedIn();
+
+    this.setState({
+      isLoggedIn,
+      email: auth.getEmail(),
+      isVerified: auth.getIsVerified(),
+      group: auth.getGroup(),
+      isAuthenticating: false,
+      token: auth.getAccessToken(),
+    });
+
+    return isLoggedIn();
   }
 
   onLogin() {
@@ -62,12 +77,7 @@ class App extends Component {
     if (/access_token|id_token|error/.test(location.hash)) {
       auth.handleAuthentication()
         .then(() => {
-          const isLoggedIn = auth.isLoggedIn();
-          this.setState({
-            isLoggedIn,
-            isAuthenticating: false,
-          });
-          isLoggedIn && history.push('/home');
+          this.setAuthState() && history.push('/home');
         })
         .catch(() => {
           this.setState({ isAuthenticating: false });
@@ -76,13 +86,18 @@ class App extends Component {
     }
   }
 
+  onInviteCode(e) {
+    e.preventDefault();
+    console.log({ e });
+  }
+
   render() {
-    const { isAuthenticating, isLoggedIn } = this.state;
+    const { isAuthenticating, isLoggedIn, email, isVerified, group, token } = this.state;
 
     return (
       <Router history={history}>
         <Grommet full theme={theme}>
-          <Box flex>
+          <Box flex margin={{ bottom: 'xlarge'}}>
             <AppHeader
               isLoggedIn={isLoggedIn}
               isAuthenticating={isAuthenticating}
@@ -90,7 +105,23 @@ class App extends Component {
               onLogin={this.onLogin}
               onLogout={this.onLogout}
             />
-            <Routes isAuthenticating={isAuthenticating} isLoggedIn={isLoggedIn} onCallback={this.onCallback} />
+            {
+              isAuthenticating ? 
+                null :
+                <Box align='center' justify='center'>
+                  <Route path="/" exact render={() => isLoggedIn ? <Redirect to='/home' /> : <Landing /> }/>
+                  <PrivateRoute isLoggedIn={isLoggedIn} path="/home">
+                    <Home
+                      token={token}
+                      email={email}
+                      isVerified={isVerified}
+                      group={group}
+                      onInviteSubmit={this.onInviteCode}
+                    />
+                  </PrivateRoute>
+                  <Route path="/callback" render={(props) => (<Callback onCallback={this.onCallback} {...props} />)} />
+                </Box>
+            }
           </Box>
         </Grommet>
       </Router>

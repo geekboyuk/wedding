@@ -6,7 +6,7 @@ export default class Auth {
     clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
     redirectUri: process.env.REACT_APP_AUTH_CALLBACK_URL,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid email'
   });
 
   login() {
@@ -41,15 +41,32 @@ export default class Auth {
     return this.idToken;
   }
 
+  getExpires() {
+    return this.expiresAt;
+  }
+
+  getEmail() {
+    return this.email;
+  }
+
+  getGroup() {
+    return this.group;
+  }
+
+  getIsVerified() {
+    return this.isVerified;
+  }
+
   setSession(authResult) {
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
+    console.log({ authResult });
 
     // Set the time that the access token will expire at
-    let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
-    this.expiresAt = expiresAt;
+    this.expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+    this.group = authResult.idTokenPayload[`${process.env.REACT_APP_AUTH_DOMAIN}group`];
+    this.isVerified = authResult.idTokenPayload.email_verified;
+    this.email = authResult.idTokenPayload.email;
   }
 
   renewSession() {
@@ -68,13 +85,12 @@ export default class Auth {
   }
 
   clearSession() {
-    // Remove tokens and expiry time
     this.accessToken = null;
     this.idToken = null;
     this.expiresAt = 0;
-
-    // Remove isLoggedIn flag from localStorage
-    localStorage.removeItem('isLoggedIn');
+    this.group = null;
+    this.isVerified = false
+    this.email = null;
   }
 
   logout() {
@@ -82,10 +98,7 @@ export default class Auth {
     this.auth0.logout({ returnTo: process.env.REACT_APP_AUTH_LOGOUT_URL });
   }
 
-  isLoggedIn() {
-    // Check whether the current time is past the
-    // access token's expiry time
-    let expiresAt = this.expiresAt;
-    return new Date().getTime() < expiresAt;
+  getIsLoggedIn() {
+    return new Date().getTime() < this.expiresAt;
   }
 }
