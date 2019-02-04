@@ -33,8 +33,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
-      # run tests!
-      - run: yarn build
+      - run:
+          name: Build Client
+          command: yarn build
+          environment:
+            REACT_APP_AUTH_DOMAIN=westcottcook.eu.auth0.com
+            REACT_APP_AUTH_CLIENT_ID=FGITPhb9H2u6zTPzvSIxD8KqSpYAyeQS
+            REACT_APP_AUTH_CALLBACK_URL=https://wedding.westcottwideweb.com/callback
+            REACT_APP_AUTH_LOGOUT_URL=https://wedding.westcottwideweb.com
+            REACT_APP_API_ENDPOINT=https://api.westcottwideweb.com/wedding
 
       - save_cache:
           key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
