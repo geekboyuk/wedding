@@ -1,0 +1,169 @@
+{
+  "GroupsTable": [
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "brook domain"
+          },
+          "group": {
+            "S": "connors"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "hovercraft salad"
+          },
+          "group": {
+            "S": "nunn"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "human theme"
+          },
+          "group": {
+            "S": "trevor"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "futon rough"
+          },
+          "group": {
+            "S": "us"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "jeep press"
+          },
+          "group": {
+            "S": "calvert"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "carport video"
+          },
+          "group": {
+            "S": "cook"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "poster sky"
+          },
+          "group": {
+            "S": "westcott"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "interior sleet"
+          },
+          "group": {
+            "S": "westcott2"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "producer stair"
+          },
+          "group": {
+            "S": "cook2"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "garlic session"
+          },
+          "group": {
+            "S": "langridge"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "invite_code": {
+            "S": "price world"
+          },
+          "group": {
+            "S": "parmer"
+          },
+          "invite_type": {
+            "S": "day"
+          }
+        }
+      }
+    }
+  ]
+}
